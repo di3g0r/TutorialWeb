@@ -12,14 +12,12 @@ const server = http.createServer(
 
         const endpoint_spotify="https://accounts.spotify.com/api/token";
 
-        const endpoint_artist_id = "";
-
         const endpoint_artist = "https://api.spotify.com/v1/artists/4Z8W4fKeB5YxbusRsdQVPb";
+        cats(res);
+
         fetch(endpoint_spotify, requestOptions).then(function (r){
             return r.json();
     }).then(function(j){
-            //res.write(JSON.stringify(j));
-            //console.log(j);
             token = j.access_token;
             const artistOptions = {
                 headers: {
@@ -36,7 +34,7 @@ const server = http.createServer(
             throw new Error('Error al obtener información del artista');
         }
     })
-    .then(function (artistData) {
+    .then(function datos(artistData) {
 
         const artistName = artistData.name;
         const artistGenres = artistData.genres;
@@ -46,25 +44,89 @@ const server = http.createServer(
         const imageHeight = artistData.images[0].height;
         const imageWidth = artistData.images[0].width;
 
-
-        //const message = `Nombre del artista: ${artistName}\nGeneros: ${artistGenres.join(', ')}\nSeguidores: ${artistFollowers}`;
-
         const html = `
             <h1>${artistName}</h1>
             <img src="${imageSrc}" alt="${artistName}">
-            <p>Géneros: ${artistGenres.join(', ')}</p>
-        `;
+            <p>G&ecircneros: ${artistGenres.join(', ')}</p>  
 
-        ///const html = `<h1>${artistName}</h1><img src="${imageSrc}" alt="${artistName}">`;
+        `; //&ecirc es para ponerle acento a la e
 
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end(html);
+        //res.writeHead(200, {'Content-Type': 'text/html'});
+        res.write(html);
+        return recommendation(artistName, artistGenres);
+    }).then(function(recommendations) {
+        res.write('<h2>Recomendaciones:</h2>');
+        recommendations.forEach(function(rec) {
+            res.write(`<p>${rec}</p>`);
+        });
+        res.end();
     })
     .catch(function (error) {
         res.write('Error en el servidor: ' + error.message);
         res.end();
-    });
+    })
+
 });
+
+function recommendation(artistName, artistGenres){
+    const endpoint_ai = "https://api.openai.com/v1/chat/completions";
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer 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'
+        },
+        body: JSON.stringify({
+            model: 'gpt-3.5-turbo',
+            messages: [{
+                "role": "user",
+                "content": `Recomiendame 3 artistas basado en que me gusta ${artistName} y me gustan los siguientes géneros: ${artistGenres.join(', ')}`
+            }]
+        })
+    };
+
+    return fetch(endpoint_ai, options).then(function(response){
+        if (response.ok) {
+            return response.json();
+        }
+        else{
+            throw new Error('Error al obtener recomendaciones');
+        }}).then(function(data) {
+            return data.choices.map(function(choice) {
+                return choice.message.content;
+            });
+        });
+    }
+
+function cats(res){
+    const cat_options= {
+        header:{
+            'x-api-key' : 'live_03VcLi46BwSYZDyZMltD2y5ZzhSQCMO5L8wcU7e5TeIJUg3ZXokuKQOFS2ntXFhx'
+        }
+    };
+
+    const endpoint_cats = 'https://api.thecatapi.com/v1/images/search';
+
+    fetch(endpoint_cats, cat_options).then(function(respuesta){
+        return respuesta.json();
+    }).then(function data(r){
+        console.log(r);
+        return r;
+    }).then(function gatito(j){
+        imagen = j[0].url;
+
+        const html = `
+            <img src="${imagen}">
+        `; 
+
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.write(html);
+        //res.end();
+    })
+
+
+}
+
 
 server.listen(3000, '127.0.0.1', function() {
     
