@@ -12,11 +12,15 @@ const server = http.createServer(
 
         const endpoint_spotify="https://accounts.spotify.com/api/token";
 
-        const endpoint_artist = "https://api.spotify.com/v1/artists/4Z8W4fKeB5YxbusRsdQVPb";
+        const endpoint_artist = "https://api.spotify.com/v1/artists/0TnOYISbd1XYRBk9myaseg";
+
+        const endpoint_search = `https://api.spotify.com/v1/search?q=${encodeURIComponent('LuisMiguel')}&type=artist`;
         cats(res);
 
         fetch(endpoint_spotify, requestOptions).then(function (r){
+            console.log(r);
             return r.json();
+            
     }).then(function(j){
             token = j.access_token;
             const artistOptions = {
@@ -29,6 +33,7 @@ const server = http.createServer(
 
     }).then(function (response) {
         if (response.ok) {
+            console.log(response);
             return response.json();
         } else {
             throw new Error('Error al obtener información del artista');
