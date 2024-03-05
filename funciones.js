@@ -1,7 +1,4 @@
-const http = require('node:http');
-
-const server = http.createServer(function(sol, res) {
-
+function spotifyAPI(){
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -9,13 +6,6 @@ const server = http.createServer(function(sol, res) {
     };
 
     const endpoint_spotify = "https://accounts.spotify.com/api/token";
-    const searchQuery = sol.url.split('?q=')[1];
-
-    if (!searchQuery) {
-        res.writeHead(400, {'Content-Type': 'text/plain'});
-        res.end('Por favor, proporciona un término de búsqueda.');
-        return;
-    }
 
     fetch(endpoint_spotify, requestOptions)
         .then(function(r) {
@@ -26,8 +16,10 @@ const server = http.createServer(function(sol, res) {
         })
         .then(function(j) {
             const token = j.access_token;
-            const endpoint_search = `https://api.spotify.com/v1/search?q=${encodeURIComponent(searchQuery)}&type=artist`;
 
+            let artistName = document.getElementById("input-artist").value;
+            const endpoint_search = `https://api.spotify.com/v1/search?q=${encodeURIComponent(artistName)}&type=artist`;
+            
             const searchOptions = {
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -46,9 +38,6 @@ const server = http.createServer(function(sol, res) {
                     if (artistas.length > 0) {
                         const primerArtista = artistas[0];
                         const artistId = primerArtista.id;
-                        const artistName = primerArtista.name;
-                        const artistGenres = primerArtista.genres;
-                        const imageSrc = primerArtista.images[0].url;
 
                         const artistEndpoint = `https://api.spotify.com/v1/artists/${artistId}`;
                         const artistOptions = {
@@ -65,53 +54,41 @@ const server = http.createServer(function(sol, res) {
                                 return response.json();
                             })
                             .then(function(artistData) {
-                                return {
-                                    name: artistName,
-                                    genres: artistGenres,
-                                    image: imageSrc,
-                                    followers: artistData.followers.total
-                                };
+                                document.getElementById("artist-name").textContent = artistData.name;
+                                document.getElementById("artist-genres").textContent = "Géneros relacionados: " + artistData.genres.join(', ');
+                                document.getElementById("artist-followers").textContent = "Seguidores: " + artistData.followers.total;
+                                document.getElementById("artist-img").setAttribute("src", artistData.images[0].url);
                             });
                     } else {
                         throw new Error('No se encontraron artistas con ese nombre.');
                     }
                 });
         })
-        .then(function(artistInfo) {
-           /* const html = `
-                <h1>${artistInfo.name}</h1>
-                <img src="${artistInfo.image}" alt="${artistInfo.name}">
-                <p>G&ecircneros: ${artistInfo.genres.join(', ')}</p>
-                <p>Seguidores: ${artistInfo.followers}</p>
-            `;
-
-            
-            //&ecirc es para ponerle acento a la e
-            //res.writeHead(200, {'Content-Type': 'text/html'});
-            res.write(html);
-            return recommendation(artistInfo.name, artistInfo.genres);
-            //res.end();*/
-            return {
-                name: artistInfo.name,
-                image : artistInfo.image,
-                genres : artistInfo.genres.join(', '),
-                followers : artistInfo.followers
-            };
-        })
         .catch(function(error) {
-            //res.writeHead(500, {'Content-Type': 'text/plain'});
-            res.end('Error en el servidor: ' + error.message);
-        })
-        /*.then(function(recommendations) {
-            res.write('<h2>Recomendaciones:</h2>');
-            recommendations.forEach(function(rec) {
-                res.write(`<p>${rec}</p>`);
-            });
-            res.end();
-        })*/
+            console.log("Error:", error);
+        });
+}
 
-});
 
+
+
+function cats(){
+    const cat_options= {
+        header:{
+            'x-api-key' : 'live_03VcLi46BwSYZDyZMltD2y5ZzhSQCMO5L8wcU7e5TeIJUg3ZXokuKQOFS2ntXFhx'
+        }
+    };
+
+    const endpoint_cats = 'https://api.thecatapi.com/v1/images/search';
+
+    return fetch(endpoint_cats, cat_options).then(function(respuesta){
+        return respuesta.json();
+    }).then(function (data){
+        let image = document.getElementById("cat-image")
+        image.setAttribute("src",data[0].url)
+        return data[0].url;
+    });
+}
 
 function recommendation(artistName, artistGenres){
     const endpoint_ai = "https://api.openai.com/v1/chat/completions";
@@ -143,26 +120,3 @@ function recommendation(artistName, artistGenres){
         });
     }
 
-function cats(){
-    const cat_options= {
-        header:{
-            'x-api-key' : 'live_03VcLi46BwSYZDyZMltD2y5ZzhSQCMO5L8wcU7e5TeIJUg3ZXokuKQOFS2ntXFhx'
-        }
-    };
-
-    const endpoint_cats = 'https://api.thecatapi.com/v1/images/search';
-
-    return fetch(endpoint_cats, cat_options).then(function(respuesta){
-        return respuesta.json();
-    }).then(function (data){
-        let image = document.getElementById("cat-image")
-        image.setAttribute("src",data[0].url)
-        return data[0].url;
-    });
-}
-
-
-server.listen(3000, '127.0.0.1', function() {
-    
-    console.log("Servidor corriendo");
-  });
