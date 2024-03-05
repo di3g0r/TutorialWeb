@@ -41,19 +41,20 @@
     <div>
         <h4>Ahora, vamos a explicarlo con la API de Spotify</h4>
         <p>Primero que nada, creamos un nuevo documento de JavaScript al que llamaremos ‘app.js’ (la terminación de los archivos de JavaScript es .js). Ahora, declaramos una constante llamada http utilizando el módulo http de Node.js, HTTP es un protocolo para la transferencia de datos ‘Hyper Text Transfer Protocol’, y, a continuación, creamos nuestro servidor de forma local (solo en nuestra computadora) con http.createServer</p>
-        <div class="container" style="background-color: bisque;">
-            <pre><code>const http = require('node:http');
+        <div class="container" style="background-color: black;">
+            <pre><code style="color: azure;">const http = require('node:http');
 const server = http.createServer(
             </code></pre>
         </div>
         <p></p>
     </div>
     <p>Ahora, utilizaremos funciones para realizar una petición a la API de Spotify, en este caso, le queremos pedir un Token para poder tener acceso a la información de los artistas que están dentro de la app. Primero, declaramos algunas opciones como method, headers y body, así como los endpoints, un endpoint es un link  donde posteriormente un función llamada fetch tratará de acceder con los parámetros que le mandemos.</p>
-    <div class="container" style="background-color: bisque;">
-        <pre><code>const requestOptions = {
+    <div class="container" style="background-color: black;">
+        <pre><code style="color: azure;">const requestOptions = {
 method: 'POST',
 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-body: 'grant_type=client_credentials&client_id=d9ecb08e08b6401884917bc8be38b1ca&client_secret=5953508c83af4749a6cf814558cea792'       
+body: 'grant_type=client_credentials&client_id=TU_CLIENT_ID
+client_secret=TU_CLIENT_SECRET'       
 };
 
 const endpoint_spotify="https://accounts.spotify.com/api/token";
@@ -66,12 +67,12 @@ const endpoint_artist = "https://api.spotify.com/v1/artists/4Z8W4fKeB5YxbusRsdQV
         <br>
         Ahora, utilizamos la función fetch, la cual se utiliza para hacer peticiones y comunicarnos con la red. A esta función le pasamos de parámetros  el endpoint y las opciones para que sepa a dónde acceder. Y si es que encuentra una respuesta regresa un archivo JSON con lo que encontró. Que, en este caso tendrá nuestro token para ahora si, poder realizar búsquedas dentro de spotify. 
         </p>
-        <pre class="container" style="background-color: bisque"><code>fetch(endpoint_spotify, requestOptions).then(function (r){
+        <pre class="container" style="background-color: black"><code style="color: azure;">fetch(endpoint_spotify, requestOptions).then(function (r){
     return r.json();
 })
         </code></pre>
         <p>A continuación, creamos un nuevo set de opciones al que incluimos nuestro Token. Y posteriormente, realizamos un nuevo fetch, ahora con el endpoint de artista el cual es un link a la página de cierto artista o grupo y con nuestro token, para acceder a cierta información de dicho artista.</p>
-        <pre class="container" style="background-color: bisque"><code>.then(function(j){
+        <pre class="container" style="background-color: black"><code style="color: azure;">.then(function(j){
     token = j.access_token;
     const artistOptions = {
         headers: {
@@ -81,7 +82,7 @@ const endpoint_artist = "https://api.spotify.com/v1/artists/4Z8W4fKeB5YxbusRsdQV
     return fetch(endpoint_artist, artistOptions);
         </code></pre>
         <p>Después, realizamos una validación de si la respuesta que recibimos en dicho fetch es positiva o si hay algún error. Si todo está bien, pasamos el JSOn que recibimos como respuesta a la siguiente función, pero en caso de error lanzamos un error.</p>
-        <pre class="container" style="background-color: bisque"><code>.then(function (response) {
+        <pre class="container" style="background-color: black"><code style="color: azure;">.then(function (response) {
     if (response.ok) {
         return response.json();
     } else {
@@ -90,7 +91,7 @@ const endpoint_artist = "https://api.spotify.com/v1/artists/4Z8W4fKeB5YxbusRsdQV
 })  
         </code></pre>
         <p>Si todo salió bien hasta este punto, tomaremos el JSOn que recibimos en el punto anterior y extraemos cierta información como el nombre del artista, una foto y los géneros de su música. Para posteriormente, incluirlas en un documento HTML que es lo que mostraremos en pantalla.</p>
-        <pre class="container" style="background-color: bisque"><code>.then(function datos(artistData) {
+        <pre class="container" style="background-color: black"><code style="color: azure;">.then(function datos(artistData) {
 const artistName = artistData.name;
 const artistGenres = artistData.genres;
 const artistFollowers = artistData.followers.total;
@@ -118,18 +119,30 @@ return html;
         </code></pre>
         <p>Por último, aunque esté al final del código, es muy importante montar el servidor en nuestros puertos locales y hacer que estén esperando una respuesta de las funciones para actuar en base a ellas.</p>
     </div>
+        <div>
+            <h4>Pruébalo</h4>
+            <p>Ya te explicamos como funciona el código, ahora vamos a usarlo, ingresa el nombre de un artista y te mostraremos una imagen de él, que géneros canta y cuántos seguidores tiene en la plataforma.</p>
+            <div>
+                <input type="text" name="artista" id="input-artist" placeholder="Ingresa el nombre de un artista" style="width: 230px;">
+                <button class="btn btn-outline-success">Ingresar</button>
+                <br>
+                <img src="https://ksdy50.com/wp-content/uploads/2023/06/header4P4A6682.jpg" style="width: 400px;">
+                <h6>Nombre:</h6>
+            </div>
+        </div>
+
     <div>
         <h4>Ahora con OpenAI</h4>
         <p>Así como la API de spotify nos puede servir para acceder a información de un artista, su música, etc. La API de OpenAI tiene múltiples propósitos los cuales utilizan los modelos de Inteligencia Artificial que tiene la empresa, probablemente hayas escuchado, o incluso usado ChatGpt o Dalle (Estos 2 con hipervínculo). Entre las funciones de la API están que podemos generar imágenes, hacer consultas como a ChatGPT o pasar texto a audio. En esta ocasión, nos concentramos simplemente en hacerle peticiones al modelo de ChatGPT. Vamos a combinar la respuesta que obtuvimos de Spotify para en base a ella, pedirle recomendaciones musicales a GPT.
         <br>
         Para esto, empezamos con una nueva función, la cual recibe 2 parámetros los cuales obtuvimos con la API de Spotify. El nombre del artista y los géneros de su música. También declaramos el endpoint, es muy importante este paso ya que cada API tiene uno diferente y nuestras opciones, entre las cuales va nuestro token y el contenido, que es lo que le queremos preguntar al modelo.
         </p>
-        <pre class="container" style="background-color: bisque"><code>const endpoint_ai = "https://api.openai.com/v1/chat/completions";
+        <pre class="container" style="background-color: black"><code style="color: azure;">const endpoint_ai = "https://api.openai.com/v1/chat/completions";
 const options = {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer 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'
+        'Authorization': 'Bearer sk-TU KEY'
     },
     body: JSON.stringify({
         model: 'gpt-3.5-turbo',
@@ -141,7 +154,7 @@ const options = {
 };
         </code></pre>
         <p>Ahora, utilizaremos de nuevo la función fetch para hacerle peticiones al servidor. Si la respuesta que recibimos es buena, pasamos el JSON que recibimos como respuesta a la siguiente función, en caso de que haya un error mandamos una alerta del error. Por último, extraemos la respuesta que recibimos del JSON para mostrarsela al usuario.</p>
-        <pre class="container" style="background-color: bisque"><code>return fetch(endpoint_ai, options).then(function(response){
+        <pre class="container" style="background-color: black"><code style="color: azure;">return fetch(endpoint_ai, options).then(function(response){
 if (response.ok) {
     return response.json();
 }
@@ -161,7 +174,7 @@ else{
         <br>
         Creamos nuestra función la cual se llamará cats. Y lo primero que haremos es declarar las opciones, donde únicamente irá el header con nuestro token, el cual obtuvimos al hacer nuestra cuenta. Y posteriormente declaramos el endpoint, este endpoint en particular nos lleva a una imagen random de un gato.
         </p>
-        <pre class="container" style="background-color: bisque"><code> const cat_options= {
+        <pre class="container" style="background-color: black"><code style="color: azure;"> const cat_options= {
     header:{
         'x-api-key' : 'live_03VcLi46BwSYZDyZMltD2y5ZzhSQCMO5L8wcU7e5TeIJUg3ZXokuKQOFS2ntXFhx'
     }
@@ -170,7 +183,7 @@ const endpoint_cats = 'https://api.thecatapi.com/v1/images/search';
         </code></pre>
         <p>Posteriormente, utilizamos la función fetch con el endpoint y nuestras opciones para hacerle una solicitud al servidor. Lo que esperamos obtener de regreso es un JSON del cual a continuación podemos extraer el url donde encontraremos una imagen random de un gato. Para mostrarla en pantalla creamos un pequeño html que únicamente contendrá nuestra imagen.
         </p>
-        <pre class="container" style="background-color: bisque"><code>fetch(endpoint_cats, cat_options).then(function(respuesta){
+        <pre class="container" style="background-color: black"><code style="color: azure;">fetch(endpoint_cats, cat_options).then(function(respuesta){
         return respuesta.json();
     }).then(function data(r){
         console.log(r);
@@ -189,12 +202,13 @@ const endpoint_cats = 'https://api.thecatapi.com/v1/images/search';
 }   
        </code></pre>
        <p>Y listo, ahora tenemos una imagen de un gato!!!</p>
-    <div class="container" style="display: flex; align-items: center; justify-content: center; background-color: aquamarine; height: max-content;">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkLvTPK_Ih61Iry-9JyM-RWLlkr1RfJZ5AQQ&usqp=CAU" alt="">
+    <div class="container" style="display: flex; align-items: center; justify-content: center; height: max-content;">
+        <img id="cat-image" src="https://static.vecteezy.com/system/resources/previews/029/552/823/non_2x/portraits-of-cats-funny-faces-generative-ai-photo.jpg" class= "img-thumbnail"style="height: 300px;">
     </div>
-    <div style="display: flex; align-items: center; justify-content: center;">
-        <button>Generar imagen</button>
+    <div style="display: flex; align-items: center; justify-content: center; margin-top: 20px;">
+        <button id= "cat-button"class="btn btn-outline-info" onclick="cats()">Generar imagen</button>
     </div>
+</div>
 </div>
 <footer class="page-footer font-small indigo" style="background-color: #ffc04afa; height: auto; padding: 10px 10px;">
     <div class="container-fluid text-center">
@@ -209,4 +223,5 @@ const endpoint_cats = 'https://api.thecatapi.com/v1/images/search';
 </footer>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="app.js"></script>
 </html>
