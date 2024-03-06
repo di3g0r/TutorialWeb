@@ -119,11 +119,11 @@ return html;
         </code></pre>
         <p>Por último, aunque esté al final del código, es muy importante montar el servidor en nuestros puertos locales y hacer que estén esperando una respuesta de las funciones para actuar en base a ellas.</p>
     </div>
-        <div class="container">
+        <div>
             <h4>Pruébalo</h4>
             <p>Ya te explicamos como funciona el código, ahora vamos a usarlo, ingresa el nombre de un artista y te mostraremos una imagen de él, que géneros canta y cuántos seguidores tiene en la plataforma.</p>
-            <div class="container" style="display: flex;">
-                <input type="text" name="artista" id="input-artist" placeholder="Ingresa el nombre de un artista" style="width: 230px; height: 35px;">
+            <div class="container" style="display: flex; margin-bottom: 10px; text-align: center; justify-content: center;">
+                <input class="form-control" type="text" name="artista" id="input-artist" placeholder="Ingresa el nombre de un artista" style="width: 250px; height: 37px; margin-right: 10px;">
                 <button onClick="spotifyAPI()" class="btn btn-outline-success">Ingresar</button>
             </div>
             <div class="d-flex">
@@ -171,7 +171,7 @@ else{
         return choice.message.content;
     });
 });
-}    
+} 
         </code></pre>
     </div>
     <div>
