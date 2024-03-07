@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tutorial Node JS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="icon" type="image/jpg" href="https://cdn.icon-icons.com/icons2/4067/PNG/512/heels_footwear_boots_clothes_fashion_shoes_woman_heel_shoe_icon_258672.png"/>
 </head>
 <body style="background-color: azure;">
     <div class="container" style="margin-top:30px; margin-bottom: 30px;">
@@ -16,9 +17,9 @@
     <div style="align-items: center;" class="row">
         <div class="col-md-6">
             <h4>Pero primero que nada, ¿Qué es NodeJS?</h4>
-            <p>A partir de ahora nos referiremos a Node.js simplemente como Node. Node es un entorno que permite a cualquiera crear herramientas y/o aplicaciones utilizando JavaScript (link). Node tiene grandes ventajas, entre ellas están:
+            <p>A partir de ahora nos referiremos a Node.js simplemente como Node. Node es un entorno que permite a cualquiera crear herramientas y/o aplicaciones utilizando JavaScript. Node tiene grandes ventajas, entre ellas están:
             </p>
-                <li>Permite usar JavaScript desde el servidor</li>
+                <li>Permite usar Javascript desde el servidor</li>
                 <li>Su rendimiento</li>
                 <li>Su código se escribe en Javascript</li>
                 <li>Se puede utilizar en distintos sistemas operativos</li>
@@ -32,16 +33,32 @@
     <div class="col-md-6">
             <h4>Y ahora, ¿Qué *$&*?¿!#% es una API y para qué sirven?</h4>
             <p>Hay que entender que API es un acrónimo de Application Programming Interface, o en español, Interfaz de Programación de Aplicación. El nombre quizás te suene muy rimbombante pero vamos a decir que una API no es más que una regla o mecanismo que permite que 2 aplicaciones puedan comunicarse entre ellas. Muchas de las aplicaciones que usamos día a día usan APIs, por ejemplo nuestra aplicación del clima utiliza una para comunicarse con una aplicación o base de datos que contiene la información del clima. Por lo tanto, en resumidas cuentas, una API es una forma de mensajería entre apps para integrar apps que ya existen con una nueva.
-            </p>
+            </p>  
     </div>
         <div class="col-md-6">
-            <img src="https://images.ctfassets.net/crb83veve8xb/7ibAX33YGjF3RHKyWZQg9X/06479534f1125121fd3ddd54f8c030d9/Gluo-JUL-9.png" alt="..." class="img-thumbnail" style="width: 400px;">
+            <img src="https://images.ctfassets.net/crb83veve8xb/7ibAX33YGjF3RHKyWZQg9X/06479534f1125121fd3ddd54f8c030d9/Gluo-JUL-9.png" alt="..." class="img-thumbnail" style="width: 500px; height: 300px;object-fit: cover;">
+        </div>
+        <div>
+            <h4>¿Cómo funciona el método GET?</h4>
+            <p>
+                A la hora de interactuar con servicios web, existe más de una manera de enviar los datos, y de las que vamos a hablar son <strong>GET</strong> y <strong>POST</strong>. Nosotros, al crear nuestra página web o al usar alguna otra siempre estamos enviando datos, al dar “Enviar” en una encuesta, pagar un artículo o buscar algo dentro de la página. El método <strong>GET</strong> envía los datos que nosotros generamos o ingresamos por medio del url de la página. Un ejemplo de esto podría ser una pagina que sea una calculadora, si envía los datos con el método <strong>GET</strong>.
+            </p>
+            <pre><code>http://www.calculadora.com/?suma1=5&suma2=3</code></pre>
+            <p>
+                En este caso, queremos sumar 2 números, y aunque nosotros los ingresemos en la página, estos números se pasan en la URL al servidor. El símbolo ?, nos indica donde inician los parámetros enviados por el usuario.
+            </p>
+            <h4>¿Cómo funciona el Método POST?</h4>
+            <p>
+                Ahora, hablemos del método <strong>POST</strong>, este podría decirse que es como lo contrario a <strong>GET</strong>. Aquí, los datos no se envían por medio de la URL si no que se pasan ocultos al usuario o en un segundo plano. Entre las ventajas de este método es ofrecerle discreción al usuario, ya que no se muestran los datos en el URL, no se guardan en caché ni historial y se pueden enviar muchos tipos de datos, como fotos o vídeos. Por ejemplo:
+            </p>
+            <pre><code>http://www.calculadora.com/resultado</code></pre>
+            <strong>(Ninguno de estos links funciona, solo son un ejemplos)</strong>
         </div>
     </div>
-    <div>
+    <div style="margin-top: 20px;">
         <h4>Ahora, vamos a explicarlo con la API de Spotify</h4>
         <p>Primero que nada, creamos un nuevo documento de JavaScript al que llamaremos ‘app.js’ (la terminación de los archivos de JavaScript es .js). Ahora, declaramos una constante llamada http utilizando el módulo http de Node.js, HTTP es un protocolo para la transferencia de datos ‘Hyper Text Transfer Protocol’, y, a continuación, creamos nuestro servidor de forma local (solo en nuestra computadora) con http.createServer</p>
-        <div class="container" style="background-color: black;">
+        <div class="container" style="background-color: black; border-radius: 7px; padding-top: 10px;">
             <pre><code style="color: azure;">const http = require('node:http');
 const server = http.createServer(
             </code></pre>
@@ -49,7 +66,7 @@ const server = http.createServer(
         <p></p>
     </div>
     <p>Ahora, utilizaremos funciones para realizar una petición a la API de Spotify, en este caso, le queremos pedir un Token para poder tener acceso a la información de los artistas que están dentro de la app. Primero, declaramos algunas opciones como method, headers y body, así como los endpoints, un endpoint es un link  donde posteriormente un función llamada fetch tratará de acceder con los parámetros que le mandemos.</p>
-    <div class="container" style="background-color: black;">
+    <div class="container" style="background-color: black; border-radius: 7px; padding-top: 10px;">
         <pre><code style="color: azure;">const requestOptions = {
 method: 'POST',
 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -67,12 +84,12 @@ const endpoint_artist = "https://api.spotify.com/v1/artists/4Z8W4fKeB5YxbusRsdQV
         <br>
         Ahora, utilizamos la función fetch, la cual se utiliza para hacer peticiones y comunicarnos con la red. A esta función le pasamos de parámetros  el endpoint y las opciones para que sepa a dónde acceder. Y si es que encuentra una respuesta regresa un archivo JSON con lo que encontró. Que, en este caso tendrá nuestro token para ahora si, poder realizar búsquedas dentro de spotify. 
         </p>
-        <pre class="container" style="background-color: black"><code style="color: azure;">fetch(endpoint_spotify, requestOptions).then(function (r){
+        <pre class="container" style="background-color: black; border-radius: 7px; padding-top: 10px;"><code style="color: azure;">fetch(endpoint_spotify, requestOptions).then(function (r){
     return r.json();
 })
         </code></pre>
         <p>A continuación, creamos un nuevo set de opciones al que incluimos nuestro Token. Y posteriormente, realizamos un nuevo fetch, ahora con el endpoint de artista el cual es un link a la página de cierto artista o grupo y con nuestro token, para acceder a cierta información de dicho artista.</p>
-        <pre class="container" style="background-color: black"><code style="color: azure;">.then(function(j){
+        <pre class="container" style="background-color: black; border-radius: 7px; padding-top: 10px;"><code style="color: azure;">.then(function(j){
     token = j.access_token;
     const artistOptions = {
         headers: {
@@ -82,7 +99,7 @@ const endpoint_artist = "https://api.spotify.com/v1/artists/4Z8W4fKeB5YxbusRsdQV
     return fetch(endpoint_artist, artistOptions);
         </code></pre>
         <p>Después, realizamos una validación de si la respuesta que recibimos en dicho fetch es positiva o si hay algún error. Si todo está bien, pasamos el JSOn que recibimos como respuesta a la siguiente función, pero en caso de error lanzamos un error.</p>
-        <pre class="container" style="background-color: black"><code style="color: azure;">.then(function (response) {
+        <pre class="container" style="background-color: black; border-radius: 7px; padding-top: 10px;"><code style="color: azure;">.then(function (response) {
     if (response.ok) {
         return response.json();
     } else {
@@ -91,7 +108,7 @@ const endpoint_artist = "https://api.spotify.com/v1/artists/4Z8W4fKeB5YxbusRsdQV
 })  
         </code></pre>
         <p>Si todo salió bien hasta este punto, tomaremos el JSOn que recibimos en el punto anterior y extraemos cierta información como el nombre del artista, una foto y los géneros de su música. Para posteriormente, incluirlas en un documento HTML que es lo que mostraremos en pantalla.</p>
-        <pre class="container" style="background-color: black"><code style="color: azure;">.then(function datos(artistData) {
+        <pre class="container" style="background-color: black; border-radius: 7px; padding-top: 10px;"><code style="color: azure;">.then(function datos(artistData) {
 const artistName = artistData.name;
 const artistGenres = artistData.genres;
 const artistFollowers = artistData.followers.total;
@@ -126,13 +143,13 @@ return html;
                 <input class="form-control" type="text" name="artista" id="input-artist" placeholder="Ingresa el nombre de un artista" style="width: 250px; height: 37px; margin-right: 10px;">
                 <button onClick="spotifyAPI()" class="btn btn-outline-success">Ingresar</button>
             </div>
-            <div class="d-flex">
+            <div class="d-flex" style="margin-bottom: 40px;">
                 <br>
                 <img id="artist-img" class="img-thumbnail" style="height: 300px; width: 300px; object-fit: cover;" src="https://t2.tudocdn.net/650666?w=1920">
                 <div class="container" style="margin-top: 20px;">
-                    <h2 id="artist-name" style="text-align: center;">Nombre </h2>
-                    <h6 id="artist-genres">Géneros: </h6>
-                    <h6 id="artist-followers">Seguidores: </h6>
+                    <h2 id="artist-name">Nombre </h2>
+                    <h4 id="artist-genres" class="text-capitalize">Géneros relacionados: </h4>
+                    <h4 id="artist-followers">Seguidores: </h4>
                 </div>
             </div>
         </div>
@@ -143,7 +160,7 @@ return html;
         <br>
         Para esto, empezamos con una nueva función, la cual recibe 2 parámetros los cuales obtuvimos con la API de Spotify. El nombre del artista y los géneros de su música. También declaramos el endpoint, es muy importante este paso ya que cada API tiene uno diferente y nuestras opciones, entre las cuales va nuestro token y el contenido, que es lo que le queremos preguntar al modelo.
         </p>
-        <pre class="container" style="background-color: black;"><code style="color: azure;">const endpoint_ai = "https://api.openai.com/v1/chat/completions";
+        <pre class="container" style="background-color: black; border-radius: 7px; padding-top: 10px;"><code style="color: azure;">const endpoint_ai = "https://api.openai.com/v1/chat/completions";
 const options = {
     method: 'POST',
     headers: {
@@ -160,7 +177,7 @@ const options = {
 };
         </code></pre>
         <p>Ahora, utilizaremos de nuevo la función fetch para hacerle peticiones al servidor. Si la respuesta que recibimos es buena, pasamos el JSON que recibimos como respuesta a la siguiente función, en caso de que haya un error mandamos una alerta del error. Por último, extraemos la respuesta que recibimos del JSON para mostrarsela al usuario.</p>
-        <pre class="container" style="background-color: black"><code style="color: azure;">return fetch(endpoint_ai, options).then(function(response){
+        <pre class="container" style="background-color: black; border-radius: 7px; padding-top: 10px;"><code style="color: azure;">return fetch(endpoint_ai, options).then(function(response){
 if (response.ok) {
     return response.json();
 }
@@ -175,21 +192,26 @@ else{
         </code></pre>
     </div>
     <div>
+        <div>
+            <h4>Recomendación de Chat GPT</h4>
+            <p>Esta es la recomendación de Chat GPT basado en el artista que seleccionaste anteriormente.</p>
+            <h5 id="recomendacion-gpt"></h5>
+        </div>
         <h4>Un lindo gatito...</h4>
-        <p>En los 2 ejemplos anteriores utilizamos las funcionalidades de NodeJs, JavaScript y las APIs para mostrarte información según tus gustos y hacerte una pequeña recomendación. Pero, ya es tiempo de relajarnos un poco viendo fotos de gatitos. Si, nos leiste bien, utilizaremos una API la cual, entre otras funciones, puede mostrarnos fotos de gatos. Así que, eso haremos!!!
+        <p>En los 2 ejemplos anteriores utilizamos las funcionalidades de NodeJs, <a style="text-decoration: none; color: orange;">Javascript</a> y las APIs para mostrarte información según tus gustos y hacerte una pequeña recomendación. Pero, ya es tiempo de relajarnos un poco viendo fotos de gatitos. Si, nos leiste bien, utilizaremos una API la cual, entre otras funciones, puede mostrarnos fotos de gatos. Así que, eso haremos!!!
         <br>
         Creamos nuestra función la cual se llamará cats. Y lo primero que haremos es declarar las opciones, donde únicamente irá el header con nuestro token, el cual obtuvimos al hacer nuestra cuenta. Y posteriormente declaramos el endpoint, este endpoint en particular nos lleva a una imagen random de un gato.
         </p>
-        <pre class="container" style="background-color: black"><code style="color: azure;"> const cat_options= {
+        <pre class="container" style="background-color: black; border-radius: 7px; padding-top: 10px;"><code style="color: azure;"> const cat_options= {
     header:{
-        'x-api-key' : 'live_03VcLi46BwSYZDyZMltD2y5ZzhSQCMO5L8wcU7e5TeIJUg3ZXokuKQOFS2ntXFhx'
+        'x-api-key' : 'TU_KEY'
     }
 };
 const endpoint_cats = 'https://api.thecatapi.com/v1/images/search';
         </code></pre>
         <p>Posteriormente, utilizamos la función fetch con el endpoint y nuestras opciones para hacerle una solicitud al servidor. Lo que esperamos obtener de regreso es un JSON del cual a continuación podemos extraer el url donde encontraremos una imagen random de un gato. Para mostrarla en pantalla creamos un pequeño html que únicamente contendrá nuestra imagen.
         </p>
-        <pre class="container" style="background-color: black"><code style="color: azure;">fetch(endpoint_cats, cat_options).then(function(respuesta){
+        <pre class="container" style="background-color: black; border-radius: 7px; padding-top: 10px;"><code style="color: azure;">fetch(endpoint_cats, cat_options).then(function(respuesta){
         return respuesta.json();
     }).then(function data(r){
         console.log(r);
@@ -211,9 +233,28 @@ const endpoint_cats = 'https://api.thecatapi.com/v1/images/search';
     <div class="container" style="display: flex; align-items: center; justify-content: center; height: max-content;">
         <img id="cat-image" src="https://static.vecteezy.com/system/resources/previews/029/552/823/non_2x/portraits-of-cats-funny-faces-generative-ai-photo.jpg" class= "img-thumbnail"style="height: 300px;">
     </div>
-    <div style="display: flex; align-items: center; justify-content: center; margin-top: 20px;">
+    <div style="display: flex; align-items: center; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
         <button id= "cat-button"class="btn btn-outline-info" onclick="cats()">Generar imagen</button>
     </div>
+</div>
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+            Referencias
+            </button>
+        </h2>
+        <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">
+                <ul>
+                    <li>Referencia 1</li>
+                    <li>Referencia 2</li>
+                    <li>Referencia 3</li>
+                    <li>Referencia 4</li>
+                </ul>
+            </div>
+        </div>
+        </div>
 </div>
 </div>
 <footer class="page-footer font-small indigo" style="background-color: #ffc04afa; height: auto; padding: 10px 10px;">

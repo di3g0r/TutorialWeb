@@ -56,8 +56,9 @@ function spotifyAPI(){
                             .then(function(artistData) {
                                 document.getElementById("artist-name").textContent = artistData.name;
                                 document.getElementById("artist-genres").textContent = "Géneros relacionados: " + artistData.genres.join(', ');
-                                document.getElementById("artist-followers").textContent = "Seguidores: " + artistData.followers.total;
+                                document.getElementById("artist-followers").textContent = "Seguidores: " + artistData.followers.total.toLocaleString('en-US');
                                 document.getElementById("artist-img").setAttribute("src", artistData.images[0].url);
+                                recommendation(artistData.name, artistData.genres);
                             });
                     } else {
                         throw new Error('No se encontraron artistas con ese nombre.');
@@ -96,13 +97,13 @@ function recommendation(artistName, artistGenres){
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer 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'
+            'Authorization': 'Bearer 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'
         },
         body: JSON.stringify({
             model: 'gpt-3.5-turbo',
             messages: [{
                 "role": "user",
-                "content": `Recomiendame 3 artistas basado en que me gusta ${artistName} y me gustan los siguientes géneros: ${artistGenres.join(', ')}`
+                "content": `Recomiendame 3 artistas basado en que me gusta ${artistName} y me gustan los siguientes géneros: ${artistGenres.join(', ')}.`
             }]
         })
     };
@@ -115,7 +116,8 @@ function recommendation(artistName, artistGenres){
             throw new Error('Error al obtener recomendaciones');
         }}).then(function(data) {
             return data.choices.map(function(choice) {
-                return choice.message.content;
+                document.getElementById("recomendacion-gpt").textContent = choice.message.content;
+                //return choice.message.content;
             });
         });
     }
