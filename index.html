@@ -9,7 +9,7 @@
 </head>
 <body style="background-color: azure;">
     <div class="container" style="margin-top:30px; margin-bottom: 30px;">
-        <h1>¿Cómo usar Node JS para consumir servicios web?</h1>
+        <h1 style="text-align: center; margin-bottom: 20px;">¿Cómo usar Node JS para consumir servicios web?</h1>
         <p>Este tutorial fue elaborado con HTML y con ayuda de <a class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="https://getbootstrap.com/">Bootstrap</a>
         </p>
         <p>En este tutorial te enseñaremos que es NodeJs, su relación con las páginas web que utilizamos y que son las APIs. Para todo esto realizaremos una pequeña practica utilizando las APIs de <a class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="https://open.spotify.com/intl-es">Spotify</a>, <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="https://chat.openai.com/">Chat GPT</a> y <a class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="https://thecatapi.com/">TheCatAPI</a>
@@ -28,6 +28,9 @@
             <div class="col-md-6">
                 <img src="https://cdn.freebiesupply.com/logos/thumbs/2x/nodejs-1-logo.png" alt="..." class="img-fluid" style="width: 400px;">
             </div>
+        <div style="display: flex; justify-content: center; margin-bottom: 30px;">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/xJzzu7MVZXw?si=8KxdLFp5RzraJtUP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
     </div>
 <div class="row">
     <div class="col-md-6">
@@ -145,7 +148,7 @@ return html;
             </div>
             <div class="d-flex" style="margin-bottom: 40px;">
                 <br>
-                <img id="artist-img" class="img-thumbnail" style="height: 300px; width: 300px; object-fit: cover;" src="https://t2.tudocdn.net/650666?w=1920">
+                <img id="artist-img" class="img-thumbnail" style="height: 300px; width: 300px; object-fit: cover; margin-right: 20px;" src="https://t2.tudocdn.net/650666?w=1920">
                 <div class="container" style="margin-top: 20px;">
                     <h2 id="artist-name">Nombre </h2>
                     <h4 id="artist-genres" class="text-capitalize">Géneros relacionados: </h4>
@@ -194,11 +197,19 @@ else{
     <div>
         <div>
             <h4>Recomendación de Chat GPT</h4>
-            <p>Esta es la recomendación de Chat GPT basado en el artista que seleccionaste anteriormente.</p>
-            <h5 id="recomendacion-gpt"></h5>
+            <p>Estas son las recomendaciones de Chat GPT basado en el artista que seleccionaste anteriormente.</p>
+            <div>
+                <h5 id="artista1-id"></h5>
+                <p id="artista1-desc"></p>
+                <h5 id="artista2-id"></h5>
+                <p id="artista2-desc"></p>
+                <h5 id="artista3-id"></h5>
+                <p id="artista3-desc"></p>
+            </div>
+            <p id="descripcion-gpt"></p>
         </div>
         <h4>Un lindo gatito...</h4>
-        <p>En los 2 ejemplos anteriores utilizamos las funcionalidades de NodeJs, <a style="text-decoration: none; color: orange;">Javascript</a> y las APIs para mostrarte información según tus gustos y hacerte una pequeña recomendación. Pero, ya es tiempo de relajarnos un poco viendo fotos de gatitos. Si, nos leiste bien, utilizaremos una API la cual, entre otras funciones, puede mostrarnos fotos de gatos. Así que, eso haremos!!!
+        <p>En los 2 ejemplos anteriores utilizamos las funcionalidades de NodeJs, Javascript y las APIs para mostrarte información según tus gustos y hacerte una pequeña recomendación. Pero, ya es tiempo de relajarnos un poco viendo fotos de gatitos. Si, nos leiste bien, utilizaremos una API la cual, entre otras funciones, puede mostrarnos fotos de gatos. Así que, eso haremos!!!
         <br>
         Creamos nuestra función la cual se llamará cats. Y lo primero que haremos es declarar las opciones, donde únicamente irá el header con nuestro token, el cual obtuvimos al hacer nuestra cuenta. Y posteriormente declaramos el endpoint, este endpoint en particular nos lleva a una imagen random de un gato.
         </p>
@@ -237,6 +248,22 @@ const endpoint_cats = 'https://api.thecatapi.com/v1/images/search';
         <button id= "cat-button"class="btn btn-outline-info" onclick="cats()">Generar imagen</button>
     </div>
 </div>
+<div>
+    <h4>
+        Cambios recomendados por otro equipo
+    </h4>
+    <ol>
+        <li>
+            Redondear las esquinas de los bloques de Codigo, para mejorar la estetica de la pagina.
+        </li>
+        <li>
+            Alinear la información del artista (Nombre, Generos, Seguidores) a la izquierda para mejor comprensión. Antes, teniamos el nombre centrado y los géneros y seguidores jstificados a la izquierda.
+        </li>
+        <li>
+            Mejorar el formato de la respuesta que nos dio ChatGPT. Previamente, recibiamos la respuesta como un bloque de texto y la desplegabamos de esa forma. Ahora, le pedimos que nos la diera en un formato JSON y luego le hicimos un parse para poder acceder a cada elemeneto de forma unica y mpostrarlos en pantalla de mejor manera.
+        </li>
+    </ol>
+</div>
     <div class="accordion accordion-flush" id="accordionFlushExample">
         <div class="accordion-item">
         <h2 class="accordion-header">
@@ -247,10 +274,25 @@ const endpoint_cats = 'https://api.thecatapi.com/v1/images/search';
         <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
             <div class="accordion-body">
                 <ul>
-                    <li>Referencia 1</li>
-                    <li>Referencia 2</li>
-                    <li>Referencia 3</li>
-                    <li>Referencia 4</li>
+                    <li>Introducción a Express/Node - Aprende desarrollo web(2023). MDN Web Docs. <br>
+                        <a href="https://developer.mozilla.org/es/docs/Learn/Server-side/Express_Nodejs/Introduction">https://developer.mozilla.org/es/docs/Learn/Server-side/Express_Nodejs/Introduction</a>
+                    </li>
+                    <li>
+                        ¿Qué es una API? - Explicación de interfaz de programación de aplicaciones - AWS. (s. f.). Amazon Web Services, Inc. <br>
+                        <a href="https://aws.amazon.com/es/what-is/api/">https://aws.amazon.com/es/what-is/api/</a>
+                    </li>
+                    <li>
+                        Aprender a programar (s. f). get y post HTML: method. Formas de envío de datos en formulario. Diferencias y ventajas. <br>
+                        <a href="https://www.aprenderaprogramar.com/index.php?option=com_content&view=article&id=527:get-y-post-html-method-formas-de-envio-de-datos-en-formulario-diferencias-y-ventajas-ejemplos-cu00721b">https://www.aprenderaprogramar.com/index.php?option=com_content&view=article&id=527:get-y-post-html-method-formas-de-envio-de-datos-en-formulario-diferencias-y-ventajas-ejemplos-cu00721b</a>
+                    </li>
+                    <li>
+                        IONOS. (2020). GET vs. POST: los dos métodos de petición HTTP más conocidos cara a cara. IONOS Digital Guide. <br>
+                        <a href="https://www.ionos.mx/digitalguide/paginas-web/desarrollo-web/get-vs-post/">https://www.ionos.mx/digitalguide/paginas-web/desarrollo-web/get-vs-post/</a>
+                    </li>
+                    <li>
+                        Jesús. (2022). ¿Qué es JSON? Dongee. <br>
+                        <a href="https://www.dongee.com/tutoriales/que-es-json/">https://www.dongee.com/tutoriales/que-es-json/</a>
+                    </li>
                 </ul>
             </div>
         </div>

@@ -97,13 +97,16 @@ function recommendation(artistName, artistGenres){
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer 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'
+            'Authorization': 'Bearer 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'
         },
         body: JSON.stringify({
             model: 'gpt-3.5-turbo',
             messages: [{
                 "role": "user",
-                "content": `Recomiendame 3 artistas basado en que me gusta ${artistName} y me gustan los siguientes géneros: ${artistGenres.join(', ')}.`
+                "content": `Recomiendame 3 artistas basado en que me gusta ${artistName} y me gustan los siguientes géneros: ${artistGenres.join(', ')}. Porfavor
+                la respuesta damela en un formato JSON, donde cada artista que recomiendes sea el valor y las claves para cada artista sean
+                artista1 :  {nombre: su nombre, descripcion: descripcion del artista}, y así
+                sucesivamente. Recomiendame unicamente 3 artistas por peticion por favor.`
             }]
         })
     };
@@ -116,8 +119,15 @@ function recommendation(artistName, artistGenres){
             throw new Error('Error al obtener recomendaciones');
         }}).then(function(data) {
             return data.choices.map(function(choice) {
-                document.getElementById("recomendacion-gpt").textContent = choice.message.content;
-                //return choice.message.content;
+                let respuesta = JSON.parse(choice.message.content);
+                document.getElementById("artista1-id").textContent = respuesta.artista1.nombre;
+                document.getElementById("artista1-desc").textContent = respuesta.artista1.descripcion;
+                document.getElementById("artista2-id").textContent = respuesta.artista2.nombre;
+                document.getElementById("artista2-desc").textContent = respuesta.artista2.descripcion;
+                document.getElementById("artista3-id").textContent = respuesta.artista3.nombre;
+                document.getElementById("artista3-desc").textContent = respuesta.artista3.descripcion;
+                //document.getElementById("descripcion-gpt").textContent = choice.message.content;
+                //console.log(respuesta.artista1.nombre);
             });
         });
     }
